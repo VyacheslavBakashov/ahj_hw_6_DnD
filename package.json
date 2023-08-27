@@ -1,0 +1,47 @@
+{
+  "name": "ahj_hw_6",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/VyacheslavBakashov/ahj_hw_6_DnD.git",
+  "author": "BVV",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "lint": "eslint .",
+    "test": "jest",
+    "coverage": "jest --coverage",
+    "doc": "jsdoc -c jsdoc.conf.json",
+    "preshow:coverage": "yarn run coverage",
+    "show:coverage": "live-server coverage/lcov-report",
+    "preshow:doc": "yarn run doc",
+    "show:doc": "live-server doc",
+    "preshow:dist": "yarn run build",
+    "show:dist": "live-server dist"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.22.10",
+    "@babel/core": "^7.22.10",
+    "@babel/preset-env": "^7.22.10",
+    "babel-jest": "^29.6.2",
+    "babel-loader": "^9.1.3",
+    "css-loader": "^6.8.1",
+    "css-minimizer-webpack-plugin": "^5.0.1",
+    "eslint": "^7.32.0 || ^8.2.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "html-loader": "^4.2.0",
+    "html-webpack-plugin": "^5.5.3",
+    "jest": "^29.6.2",
+    "jsdc": "^0.6.13",
+    "live-server": "^1.2.2",
+    "mini-css-extract-plugin": "^2.7.6",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1",
+    "webpack-merge": "^5.9.0"
+  },
+  "dependencies": {
+    "core-js": "3"
+  }
+}
