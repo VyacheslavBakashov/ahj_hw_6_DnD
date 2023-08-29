@@ -51,7 +51,7 @@
   pointer-events: none;
   border:3px solid #5ca84d;
   border-radius: 5px;
-  cursor: grabbing;
+  /* cursor: grabbing; */
 }
 
 .task-item__delete {
@@ -173,4 +173,5 @@
   background-color: rgb(218, 224, 220);
   color: rgb(218, 224, 220);
   border: none;
+  cursor: grabbing;
 }

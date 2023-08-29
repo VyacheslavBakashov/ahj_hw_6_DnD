@@ -149,31 +149,27 @@ export default class AppController {
 
     this.column = curTarget.closest('.board-column');
     this.item = curTarget.closest('.task-item');
+    if (this.item) {
+      this.itemSizes = this.item.getBoundingClientRect();
+      this.itemElmX = this.itemSizes.left;
+      this.itemElmY = this.itemSizes.top;
 
-    this.itemSizes = this.item.getBoundingClientRect();
-    this.itemElmX = this.itemSizes.left;
-    this.itemElmY = this.itemSizes.top;
+      this.ghostItem = this.item.cloneNode(true);
+      this.ghostItem.classList.add('dragged');
+      this.item.classList.add('colored');
 
-    this.ghostItem = this.item.cloneNode(true);
-    this.ghostItem.classList.add('dragged');
-    this.item.classList.add('colored');
+      document.body.append(this.ghostItem);
+      this.ghostItem.style.height = `${this.itemSizes.height - 12}px`;
+      this.ghostItem.style.width = `${this.itemSizes.width - 12}px`;
+      this.ghostItem.style.left = `${this.itemElmX}px`;
+      this.ghostItem.style.top = `${this.itemElmY - 10}px`;
 
-    document.body.append(this.ghostItem);
+      this.coordX = e.pageX - this.itemSizes.left;
+      this.coordY = e.pageY - this.itemSizes.top;
 
-    // document.body.querySelector('.dragged').style.cursor = 'grabbing';
-    // this.ghostItem.classList.add('grabbing')
-    // document.body.style.cursor = 'grabbing';
-
-    this.ghostItem.style.height = `${this.itemSizes.height - 12}px`;
-    this.ghostItem.style.width = `${this.itemSizes.width - 12}px`;
-    this.ghostItem.style.left = `${this.itemElmX}px`;
-    this.ghostItem.style.top = `${this.itemElmY - 10}px`;
-
-    this.coordX = e.pageX - this.itemSizes.left;
-    this.coordY = e.pageY - this.itemSizes.top;
-
-    document.documentElement.addEventListener('mouseup', this.onMouseUp);
-    document.documentElement.addEventListener('mousemove', this.onMouseMove);
+      document.documentElement.addEventListener('mouseup', this.onMouseUp);
+      document.documentElement.addEventListener('mousemove', this.onMouseMove);
+    }
   };
 
   onMouseMove = (e) => {
@@ -184,6 +180,7 @@ export default class AppController {
       this.ghostItem.style.left = `${e.pageX - this.coordX}px`;
 
       const elmUnderGhost = e.target;
+      elmUnderGhost.classList.add('grabbing');
       const elmUnderGhostRect = elmUnderGhost.getBoundingClientRect();
 
       if (!elmUnderGhost.closest('.board')) return;
@@ -216,7 +213,7 @@ export default class AppController {
         this.clearDragged();
         return;
       }
-
+      document.body.style.cursor = 'auto';
       this.rewriteStorage(e.target);
 
       this.clearDragged();
@@ -228,12 +225,15 @@ export default class AppController {
     this.ghostItem.classList.remove('dragged');
     this.item.classList.remove('colored');
 
-    document.body.style.cursor = 'auto';
     this.ghostItem.remove();
     this.item = null;
     this.ghostItem = null;
     document.documentElement.removeEventListener('mousemove', this.onMouseMove);
     document.documentElement.removeEventListener('mouseup', this.onMouseUp);
+
+    document.body.querySelectorAll('.grabbing').forEach((elm) => elm.classList.remove('grabbing'));
+    document.documentElement.removeEventListener('mouseover', this.onMouseOver);
+    document.documentElement.removeEventListener('mouseout', this.onMouseOut);
   }
 
   getItemId() {
